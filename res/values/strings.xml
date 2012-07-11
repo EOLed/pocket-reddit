@@ -7,4 +7,6 @@
     <string name="title_activity_subreddit">Loading subreddit…</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
+    <string name="title_activity_subreddit_links">SubredditLinksActivity</string>
+
 </resources>

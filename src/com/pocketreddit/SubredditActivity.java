@@ -3,6 +3,7 @@ package com.pocketreddit;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -38,7 +39,9 @@ public class SubredditActivity extends ListActivity implements RedditDataSourceM
         super.onListItemClick(l, v, position, id);
         Subreddit subreddit = subreddits.get(position);
         Log.v(TAG, "time to bring you to: " + subreddit.getUrl());
-        dsManager.loadLinksForSubreddit(subreddit.getDisplayName());
+        Intent subredditLinks = new Intent(this, SubredditLinksActivity.class);
+        subredditLinks.putExtra(SubredditLinksActivity.Extras.SUBREDDIT.toString(), subreddit);
+        startActivity(subredditLinks);
     }
 
     @Override

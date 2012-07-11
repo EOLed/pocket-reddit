@@ -7,9 +7,13 @@ import com.am05.reddit.library.things.Listing;
 import com.am05.reddit.library.things.Subreddit;
 
 public class RedditDataSourceManager {
-    private RedditDataSource ds;
+    private static final RedditDataSource ds;
     private Delegate delegate;
 
+    static {
+        ds = new RedditDataSource();
+    }
+    
     public interface Delegate {
         void onLoadDefaultSubreddits(Listing<Subreddit> defaultSubreddits);
 
@@ -21,7 +25,6 @@ public class RedditDataSourceManager {
     }
 
     public RedditDataSourceManager(Delegate delegate) {
-        ds = new RedditDataSource();
         this.delegate = delegate;
     }
 
