@@ -13,7 +13,7 @@ public class RedditDataSourceManager {
     static {
         ds = new RedditDataSource();
     }
-    
+
     public interface Delegate {
         void onLoadDefaultSubreddits(Listing<Subreddit> defaultSubreddits);
 
@@ -22,6 +22,10 @@ public class RedditDataSourceManager {
         void onLoadLinksForSubreddit(Listing<Link> linksForSubreddit);
 
         void onLoadLinksForSubredditsFailed(Throwable t);
+
+        void onLoadLinksForFrontPage(Listing<Link> linksForFrontPage);
+
+        void onLoadLinksForFrontPageFailed(Throwable t);
     }
 
     public RedditDataSourceManager(Delegate delegate) {
@@ -49,6 +53,19 @@ public class RedditDataSourceManager {
                     delegate.onLoadLinksForSubreddit(ds.getLinksForSubreddit(subreddit));
                 } catch (DataSourceException e) {
                     delegate.onLoadLinksForSubredditsFailed(e);
+                }
+            }
+        }).start();
+    }
+
+    public void loadLinksForFrontPage() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    delegate.onLoadLinksForFrontPage(ds.getLinksForFrontPage());
+                } catch (DataSourceException e) {
+                    delegate.onLoadLinksForFrontPageFailed(e);
                 }
             }
         }).start();

@@ -3,6 +3,7 @@
     <string name="app_name">Pocket Reddit</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="menu_subreddits">Subreddits</string>
     <string name="title_activity_main">Subreddit</string>
     <string name="title_activity_subreddit">Loading subreddit…</string>
     <string name="edit_message">Enter a message</string>

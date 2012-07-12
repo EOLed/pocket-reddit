@@ -1,5 +1,6 @@
 package com.pocketreddit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -12,11 +13,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.am05.reddit.library.things.Link;
 import com.am05.reddit.library.things.Listing;
 import com.am05.reddit.library.things.Subreddit;
 
-public class SubredditActivity extends ListActivity implements RedditDataSourceManager.Delegate {
+public class SubredditActivity extends ListActivity {
 
     private static final String TAG = SubredditActivity.class.getName();
     private List<Subreddit> subreddits;
@@ -26,12 +26,36 @@ public class SubredditActivity extends ListActivity implements RedditDataSourceM
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dsManager = new RedditDataSourceManager(this);
+        dsManager = createDataSourceManager();
+        Log.v(TAG, "loading default subreddits");
         dsManager.loadDefaultSubreddits();
 
         // setContentView(R.layout.activity_subreddit);
 
         // getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private RedditDataSourceManager createDataSourceManager() {
+        return new RedditDataSourceManager(new SimpleRedditDataSourceManagerDelegate() {
+            @Override
+            public void onLoadDefaultSubreddits(Listing<Subreddit> defaultSubreddits) {
+                final List<Subreddit> subreddits = defaultSubreddits.getChildren();
+                SubredditActivity.this.subreddits = subreddits;
+                final List<String> subredditNames = new ArrayList<String>();
+
+                for (Subreddit subreddit : subreddits) {
+                    subredditNames.add(subreddit.getDisplayName());
+                    Log.v(TAG, "adding: " + subreddit.getDisplayName());
+                }
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        setListAdapter(new ArrayAdapter<String>(SubredditActivity.this,
+                                android.R.layout.simple_list_item_1, subredditNames));
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -42,11 +66,6 @@ public class SubredditActivity extends ListActivity implements RedditDataSourceM
         Intent subredditLinks = new Intent(this, SubredditLinksActivity.class);
         subredditLinks.putExtra(SubredditLinksActivity.Extras.SUBREDDIT.toString(), subreddit);
         startActivity(subredditLinks);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -64,33 +83,4 @@ public class SubredditActivity extends ListActivity implements RedditDataSourceM
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onLoadDefaultSubreddits(Listing<Subreddit> defaultSubreddits) {
-        final List<Subreddit> subreddits = defaultSubreddits.getChildren();
-        this.subreddits = subreddits;
-        runOnUiThread(new Runnable() {
-            public void run() {
-                setListAdapter(new ArrayAdapter<Subreddit>(SubredditActivity.this,
-                        android.R.layout.simple_list_item_1, subreddits));
-            }
-        });
-    }
-
-    @Override
-    public void onLoadDefaultSubredditsFailed(Throwable t) {
-        Log.e(TAG, "Couldn't get default subreddits: " + t.getMessage(), t);
-    }
-
-    @Override
-    public void onLoadLinksForSubreddit(Listing<Link> linksForSubreddit) {
-        Log.v(TAG, "Links for subreddit: " + linksForSubreddit.getChildren());
-    }
-
-    @Override
-    public void onLoadLinksForSubredditsFailed(Throwable t) {
-        // TODO Auto-generated method stub
-
-    }
-
 }
