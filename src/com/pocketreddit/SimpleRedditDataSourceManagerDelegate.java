@@ -5,6 +5,7 @@ import android.util.Log;
 import com.am05.reddit.library.things.Link;
 import com.am05.reddit.library.things.Listing;
 import com.am05.reddit.library.things.Subreddit;
+import com.am05.reddit.library.things.Thing;
 import com.pocketreddit.RedditDataSourceManager.Delegate;
 
 public class SimpleRedditDataSourceManagerDelegate implements Delegate {
@@ -12,7 +13,6 @@ public class SimpleRedditDataSourceManagerDelegate implements Delegate {
 
     @Override
     public void onLoadDefaultSubreddits(Listing<Subreddit> defaultSubreddits) {
-
     }
 
     @Override
@@ -22,7 +22,6 @@ public class SimpleRedditDataSourceManagerDelegate implements Delegate {
 
     @Override
     public void onLoadLinksForSubreddit(Listing<Link> linksForSubreddit) {
-
     }
 
     @Override
@@ -32,12 +31,19 @@ public class SimpleRedditDataSourceManagerDelegate implements Delegate {
 
     @Override
     public void onLoadLinksForFrontPage(Listing<Link> linksForFrontPage) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onLoadLinksForFrontPageFailed(Throwable t) {
         Log.e(TAG, "Could not load links for front page.", t);
+    }
+
+    @Override
+    public void onLoadCommentsForLink(Listing<? extends Thing> listingForLink) {
+    }
+
+    @Override
+    public void onLoadCommentsForLinkFailed(Throwable t) {
+        Log.e(TAG, "Could not load comments for link.", t);
     }
 }

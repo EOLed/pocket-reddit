@@ -9,5 +9,6 @@
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
     <string name="title_activity_subreddit_links">SubredditLinksActivity</string>
+    <string name="title_activity_link_comments">LinkCommentsActivity</string>
 
 </resources>

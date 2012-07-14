@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.am05.reddit.library.things.Link;
 import com.am05.reddit.library.things.Listing;
@@ -57,6 +59,16 @@ public class SubredditLinksActivity extends ListActivity {
                 loadListing(linksForFrontPage);
             }
         };
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Link link = links.get(position);
+        Intent linkCommentsIntent = new Intent(this, LinkCommentsActivity.class);
+        linkCommentsIntent.putExtra(com.pocketreddit.LinkCommentsActivity.Extras.OP.toString(),
+                link);
+        startActivity(linkCommentsIntent);
     }
 
     @Override

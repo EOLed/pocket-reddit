@@ -5,6 +5,7 @@ import com.am05.reddit.library.datasources.RedditDataSource;
 import com.am05.reddit.library.things.Link;
 import com.am05.reddit.library.things.Listing;
 import com.am05.reddit.library.things.Subreddit;
+import com.am05.reddit.library.things.Thing;
 
 public class RedditDataSourceManager {
     private static final RedditDataSource ds;
@@ -26,6 +27,11 @@ public class RedditDataSourceManager {
         void onLoadLinksForFrontPage(Listing<Link> linksForFrontPage);
 
         void onLoadLinksForFrontPageFailed(Throwable t);
+
+        void onLoadCommentsForLink(Listing<? extends Thing> listingForLink);
+
+        void onLoadCommentsForLinkFailed(Throwable t);
+
     }
 
     public RedditDataSourceManager(Delegate delegate) {
@@ -40,6 +46,19 @@ public class RedditDataSourceManager {
                     delegate.onLoadDefaultSubreddits(ds.getDefaultSubreddits());
                 } catch (DataSourceException e) {
                     delegate.onLoadDefaultSubredditsFailed(e);
+                }
+            }
+        }).start();
+    }
+
+    public void loadCommentsForLink(final Link link) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    delegate.onLoadCommentsForLink(ds.getCommentsForLink(link));
+                } catch (DataSourceException e) {
+                    delegate.onLoadCommentsForLinkFailed(e);
                 }
             }
         }).start();
