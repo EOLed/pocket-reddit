@@ -13,10 +13,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.am05.reddit.library.Constants;
-import com.am05.reddit.library.things.Link;
-import com.am05.reddit.library.things.Listing;
-import com.am05.reddit.library.things.Subreddit;
+import com.pocketreddit.library.Constants;
+import com.pocketreddit.library.things.Link;
+import com.pocketreddit.library.things.Listing;
+import com.pocketreddit.library.things.Subreddit;
 
 public class SubredditLinksActivity extends ListActivity {
     private static final String TAG = SubredditLinksActivity.class.getName();

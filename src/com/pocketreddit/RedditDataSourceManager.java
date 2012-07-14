@@ -1,11 +1,11 @@
 package com.pocketreddit;
 
-import com.am05.reddit.library.datasources.DataSourceException;
-import com.am05.reddit.library.datasources.RedditDataSource;
-import com.am05.reddit.library.things.Link;
-import com.am05.reddit.library.things.Listing;
-import com.am05.reddit.library.things.Subreddit;
-import com.am05.reddit.library.things.Thing;
+import com.pocketreddit.library.datasources.DataSourceException;
+import com.pocketreddit.library.datasources.RedditDataSource;
+import com.pocketreddit.library.things.Link;
+import com.pocketreddit.library.things.Listing;
+import com.pocketreddit.library.things.Subreddit;
+import com.pocketreddit.library.things.Thing;
 
 public class RedditDataSourceManager {
     private static final RedditDataSource ds;

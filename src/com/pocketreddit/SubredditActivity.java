@@ -13,8 +13,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.am05.reddit.library.things.Listing;
-import com.am05.reddit.library.things.Subreddit;
+import com.pocketreddit.library.things.Listing;
+import com.pocketreddit.library.things.Subreddit;
 
 public class SubredditActivity extends ListActivity {
 

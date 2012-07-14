@@ -10,10 +10,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
-import com.am05.reddit.library.things.Comment;
-import com.am05.reddit.library.things.Link;
-import com.am05.reddit.library.things.Listing;
-import com.am05.reddit.library.things.Thing;
+import com.pocketreddit.library.things.Comment;
+import com.pocketreddit.library.things.Link;
+import com.pocketreddit.library.things.Listing;
+import com.pocketreddit.library.things.Thing;
 
 public class LinkCommentsActivity extends ListActivity {
     private RedditDataSourceManager dsManager;
