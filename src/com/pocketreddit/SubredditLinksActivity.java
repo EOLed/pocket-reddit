@@ -13,7 +13,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.pocketreddit.authentication.AuthenticatorManager;
 import com.pocketreddit.library.Constants;
+import com.pocketreddit.library.authentication.AuthenticationException;
+import com.pocketreddit.library.authentication.LoginResult;
 import com.pocketreddit.library.things.Link;
 import com.pocketreddit.library.things.Listing;
 import com.pocketreddit.library.things.Subreddit;
@@ -32,25 +35,44 @@ public class SubredditLinksActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setupHttpLogging();
         
+        setupHttpLogging();
+
         System.setProperty(Constants.SYSTEM_PROPERTY_USER_AGENT, "Pocket Reddit for Android");
 
-        Log.v(TAG, "was there a subreddit passed?");
 
         if (getIntent().getExtras() != null) {
             subreddit = (Subreddit) getIntent().getExtras().getSerializable(
                     Extras.SUBREDDIT.toString());
         }
 
+        Log.v(TAG, "was there a subreddit passed? " + (subreddit != null));
+
         ds = new RedditDataSourceManager(createDataSourceManagerDelegate());
 
-        if (subreddit == null) {
-            ds.loadLinksForFrontPage();
-        } else {
-            ds.loadLinksForSubreddit(subreddit.getDisplayName());
+        AuthenticatorManager authenticator = new AuthenticatorManager(createAuthenticatorManagerDelegate());
+        if (!authenticator.isLoggedIn()) {
+            authenticator.authenticate("testachan", "testachan");
         }
+    }
+
+    private AuthenticatorManager.Delegate createAuthenticatorManagerDelegate() {
+        return new AuthenticatorManager.Delegate() {
+            
+            @Override
+            public void onAuthenticateFailed(AuthenticationException e) {
+                Log.e(TAG, "Could not authenticate.", e);
+            }
+            
+            @Override
+            public void onAuthenticate(LoginResult loginResult) {
+                if (subreddit == null) {
+                    ds.loadLinksForFrontPage();
+                } else {
+                    ds.loadLinksForSubreddit(subreddit.getDisplayName());
+                }
+            }
+        };
     }
 
     private void setupHttpLogging() {
